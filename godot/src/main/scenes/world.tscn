@@ -1,0 +1,127 @@
+[gd_scene load_steps=9 format=3 uid="uid://cwxltignx35f4"]
+
+[ext_resource type="Texture2D" uid="uid://brsupg54wwnm1" path="res://assets/textures/prototype/Dark/texture_05.png" id="1_mdsvq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kjwxi"]
+albedo_texture = ExtResource("1_mdsvq")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8f6j3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pbsph"]
+
+[sub_resource type="Sky" id="Sky_at12k"]
+sky_material = SubResource("ProceduralSkyMaterial_pbsph")
+
+[sub_resource type="Environment" id="Environment_ej7qi"]
+background_mode = 2
+sky = SubResource("Sky_at12k")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_mf8rn"]
+
+[sub_resource type="GDScript" id="GDScript_j5uro"]
+script/source = "extends BulletHubServer
+"
+
+[node name="World" type="Node3D"]
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_kjwxi")
+mesh = SubResource("PlaneMesh_8f6j3")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.832459, -0.016482, 0.553841, 0, 0.999557, 0.0297463, -0.554086, -0.0247626, 0.832091, 10.4904, 8.71339, 13.4227)
+current = true
+size = 10.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.515038, 0.70215, -0.491651, 0, 0.573576, 0.819152, 0.857167, -0.421894, 0.295414, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ej7qi")
+camera_attributes = SubResource("CameraAttributesPractical_mf8rn")
+
+[node name="Interface" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Interface"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -428.0
+offset_top = -153.5
+offset_bottom = 153.5
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="GameTitle" type="Label" parent="Interface/Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -156.0
+offset_right = 156.0
+offset_bottom = 81.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 44
+text = "Bullet Hub"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButtons" type="VBoxContainer" parent="Interface/Panel/GameTitle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -184.0
+offset_top = 5.0
+offset_right = 184.0
+offset_bottom = 175.695
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="Interface/Panel/GameTitle/MenuButtons"]
+layout_mode = 2
+text = "Name
+"
+
+[node name="NameInput" type="TextEdit" parent="Interface/Panel/GameTitle/MenuButtons"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+placeholder_text = "Username
+"
+
+[node name="ServerLabel" type="Label" parent="Interface/Panel/GameTitle/MenuButtons"]
+layout_mode = 2
+text = "Ip"
+
+[node name="ServerInput" type="TextEdit" parent="Interface/Panel/GameTitle/MenuButtons"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+placeholder_text = "127.0.0.1"
+
+[node name="ConnectContainer" type="MarginContainer" parent="Interface/Panel/GameTitle/MenuButtons"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+
+[node name="ConnectButton" type="Button" parent="Interface/Panel/GameTitle/MenuButtons/ConnectContainer"]
+layout_mode = 2
+text = "Connect"
+
+[node name="BulletHubServer" type="BulletHubServer" parent="."]
+database = "bullethub"
+script = SubResource("GDScript_j5uro")
